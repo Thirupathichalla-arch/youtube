@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cs{
+            border:1px solid black;
+            width:1500px;
+            display: grid;
+            grid-template-columns: repeat(4, 20%); 
+            background-color: rgb(28, 189, 14);   
+            height:50px
+        }
+        .cs >input{
+            border:1px solid white;
+            margin:0px 100px;
+            width:400px;
+            background-color:rgb(219, 224, 224);
+            
+        }
+        button{
+            border:1px solid white;
+            margin:0px 200px;
+            width:150px;
+            font-size:20px
+        }
+        #videos {
+            width:1500px;
+            margin-top:10px;
+            display: grid;
+            grid-template-columns: repeat(4, 20%);
+            grid-gap: 5%;
+            
+            
+        }
+        
+        div>div{
+            display: grid;
+            grid-template-columns: auto auto;
+            margin-left:100px;
+            margin-top:15px;
+        }
+        
+        span{
+            margin-left:50px;
+            font-size: 15px;
+        }
+        .i{
+            margin-left:90px;
+            font-size: 15px;
+            margin-top:15px;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="cs">
+        
+        <input type="text" id="query"  placeholder=" Enter the movie"><button onclick="searchVideos()">search</button>
+         <div>Home <span>Signin</span></div>
+         <span class="i">Notifications</span>
+         
+    </div>
+    
+    <div id="videos"></div>
+
+
+
+
+</body>
+
+</html>
+<script>
+    //AIzaSyAUEYysp2jLy0ONPXdkRJqHFLhJfa4_gTc
+
+    //https://youtube.googleapis.com/youtube/v3/search?q=csk&type=video&key=[YOUR_API_KEY]
+
+    let videos = document.getElementById("videos")
+    async function searchVideos() {
+
+        let query = document.getElementById("query").value;
+
+        let res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${query}&type=video&key=AIzaSyAUEYysp2jLy0ONPXdkRJqHFLhJfa4_gTc&maxResults=20`)
+        let data = await res.json();
+        // console.log(data)
+        appendVideos(data.items)
+    }
+    // searchVideos();
+
+
+    function appendVideos(video_data) {
+
+        videos.innerHTML = null;
+
+        video_data.forEach(({ id: { videoId } }) => {
+            //console.log(video);
+            // console.log(video.id.videoId);
+            //console.log("video:", videoId);
+
+            let div = document.createElement("div");
+
+            div.innerHTML = `<iframe width="360" height="215" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+
+            videos.append(div);
+        });
+    }
+
+</script>
